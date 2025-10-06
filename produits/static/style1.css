@@ -1,0 +1,146 @@
+body {
+    color: #000;
+    overflow-x: hidden;
+    height: 100%;
+    /* background-image: url("pr.jpg"); */
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+}
+
+.card1 {
+    padding: 30px 40px;
+    margin: 60px auto; /* centre la carte horizontalement */
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+    display: flex;
+    flex-direction: column; /* empile verticalement le contenu */
+    align-items: center;    /* centre le contenu horizontalement */
+    max-width: 50%;         /* la carte ne dépasse pas 90% de l’écran */
+    width: auto;            /* largeur s’adapte au contenu */
+    text-align: center;     /* centre le texte à l’intérieur */
+    border-radius: 12px;    /* coins arrondis */
+    background-color: #fff;
+    transition: transform 0.3s ease;
+    border-left: 1px solid rgb(71, 145, 139);
+    border-top: 1px solid rgb(71, 145, 139);
+    backdrop-filter: blur(30px);
+    -webkit-backdrop-filter: blur(30px);
+        /* backdrop-filter: blur(10px); */
+    box-shadow: 20px 20px 20px -6px rgb(71, 145, 139);
+    border-radius: 20px;
+    border-left: 1px solid rgb(71, 145, 139);
+    border-top: 1px solid rgb(71, 145, 139);
+    backdrop-filter: blur(30px);
+}
+.card2 {
+    padding: 30px 40px;
+    margin: 60px auto; /* centre la carte horizontalement */
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+    display: flex;
+    flex-direction: column; /* empile verticalement le contenu */
+    align-items: center;    /* centre le contenu horizontalement */
+    max-width: 50%;         /* la carte ne dépasse pas 90% de l’écran */
+    width: auto;            /* largeur s’adapte au contenu */
+    /* text-align: center;     centre le texte à l’intérieur */
+    border-radius: 12px;    /* coins arrondis */
+    background-color: #fff;
+    transition: transform 0.3s ease;
+    border-left: 1px solid rgb(71, 145, 139);
+    border-top: 1px solid rgb(71, 145, 139);
+    backdrop-filter: blur(30px);
+    -webkit-backdrop-filter: blur(30px);
+        /* backdrop-filter: blur(10px); */
+    box-shadow: 20px 20px 20px -6px rgb(71, 145, 139);
+    border-radius: 20px;
+    border-left: 1px solid rgb(71, 145, 139);
+    border-top: 1px solid rgb(71, 145, 139);
+    backdrop-filter: blur(30px);
+}
+button {
+    background: #007BFF;
+    color: white;
+    cursor: pointer;
+    border: none;
+    transition: 0.3s;
+    border-radius: 8px;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    outline: none;
+    font-size: 14px;
+}
+.button {
+    background: #007BFF;
+    color: white;
+    cursor: pointer;
+    border: none;
+    transition: 0.3s;
+    border-radius: 8px;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    outline: none;
+    font-size: 14px;
+}
+.button1 {
+    background: #007bff00;
+    border-color: #007BFF;
+    cursor: pointer;
+    border: 1px;
+    transition: 0.3s;
+    border-radius: 8px;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    outline: none;
+    font-size: 14px;
+}
+.blue-text {
+    color: #00BCD4;
+}
+
+.form-control-label {
+    margin-bottom: 0;
+}
+
+
+/* input, 
+textarea, 
+button {
+    padding: 8px 15px;
+    border-radius: 15px !important;
+    margin: 5px 0px;
+    box-sizing: border-box;
+    border: 1px solid #ccc;
+    font-size: 18px !important;
+    font-weight: 300;
+} */
+
+
+input:focus, 
+textarea:focus {
+    -moz-box-shadow: none !important;
+    -webkit-box-shadow: none !important;
+    box-shadow: none !important;
+    border: 1px solid #00BCD4;
+    outline-width: 0;
+    font-weight: 400;
+}
+
+.btn-block {
+    text-transform: uppercase;
+    font-size: 15px !important;
+    font-weight: 400;
+    height: 43px;
+    cursor: pointer;
+}
+
+.btn-block:hover {
+    color: #fff !important;
+}
+
+button:focus {
+    -moz-box-shadow: none !important;
+    -webkit-box-shadow: none !important;
+    box-shadow: none !important;
+    outline-width: 0;
+}

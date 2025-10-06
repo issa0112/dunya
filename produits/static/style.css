@@ -1,0 +1,524 @@
+/* === Reset simple === */
+body {
+    font-family: "Times New Roman", Times, serif;
+    margin: 0;
+    padding: 0;
+    background: #f8f9fa;
+    color: #333;
+}
+
+/* === Header et titres === */
+h1 {
+    text-align: center;
+    color: #222;
+    margin-top: 20px;
+}
+h2, h3 {
+    color: #222;
+    margin-top: 20px;
+}
+
+h1 {
+    font-size: 2rem;
+    margin-bottom: 20px;
+}
+.naav{
+    display: flex;
+    /* justify-content: center;
+    align-items: center; */
+    flex-wrap: wrap;
+    gap: 10px;
+    /* margin: 0px auto; */
+    padding: 10px;
+    background: #fff;
+    border-radius: 0 0 10px 10px;
+    max-width: 2000px;
+    border-left: 1px solid rgb(71, 145, 139);
+    border-top: 1px solid rgb(71, 145, 139);
+    backdrop-filter: blur(30px);
+    -webkit-backdrop-filter: blur(30px);
+        /* backdrop-filter: blur(10px); */
+    box-shadow: 20px 20px 20px -6px rgb(71, 145, 139);
+    margin-bottom: 20px;
+    
+}
+/* === Formulaire recherche === */
+formee {
+    display: flex;
+    justify-content: right;
+    align-items: right;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin: 0px auto;
+    padding: 10px;
+    background: #fff;
+    /* max-width: 2000px; */
+    /* border-left: 1px solid rgb(71, 145, 139);
+    border-top: 1px solid rgb(71, 145, 139); */
+    backdrop-filter: blur(30px);
+    -webkit-backdrop-filter: blur(30px);
+    backdrop-filter: blur(10px);
+    /* box-shadow: 20px 20px 20px -6px rgb(71, 145, 139); */
+    /* margin-bottom: 20px; */
+}
+.search-filter-container {
+    width: 100%;
+    margin: 20px auto;
+}
+form input, form select, form button {
+    padding: 10px;
+    border: 1px solid #007bff;
+    border-radius: 8px;
+    outline: none;
+    font-size: 14px;
+}
+
+form button {
+    background: #007bff;
+    color: white;
+    cursor: pointer;
+    border: none;
+    transition: 0.3s;
+}
+
+form button:hover {
+    background: #0056b3;
+}
+
+.search-form {
+    display: flex;
+    justify-content: space-between; /* séparation gauche/droite */
+    align-items: center;
+    flex-wrap: wrap; /* pour éviter que ça déborde sur mobile */
+    gap: 10px;
+}
+
+.search-left {
+    flex: 1; /* prend l’espace à gauche */
+    min-width: 200px;
+}
+
+.filters-right {
+    display: flex;
+    gap: 10px; /* espace entre les filtres */
+    align-items: center;
+    flex-wrap: wrap;   /* si trop serré, les filtres passent à la ligne */
+    justify-content: flex-end;
+    flex: 2;
+    min-width: 250px;
+}
+
+
+/* === Liste des agences === */
+ul {
+    list-style: none;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 5px;
+}
+
+ul li a {
+    display: inline-block;
+    padding: 10px;
+    background: #e9ecef;
+    border-radius: 6px;
+    text-decoration: none;
+    color: #333;
+    font-size: 18px;
+    transition: 0.3s;
+    display: inline-block;
+    transition: transform 0.2s ease;
+}
+
+
+ul li a:hover {
+    transform: scale(1.1); /* grossit légèrement */
+}
+
+/* === Carte des tickets === */
+.ticket {
+    background: rgba(255, 255, 255, 0.06);
+    padding: 0px;
+    border-radius: 20px;
+    border-left: 1px solid rgb(71, 145, 139);
+    border-top: 1px solid rgb(71, 145, 139);
+    backdrop-filter: blur(30px);
+    -webkit-backdrop-filter: blur(30px);
+        /* backdrop-filter: blur(10px); */
+    box-shadow: 20px 20px 20px -6px rgb(71, 145, 139);
+    width: 250px;   /* ✅ largeur fixe */
+    margin: 0;      /* ❌ enlever margin auto */
+    text-align: center;
+    
+    margin: 15px;
+    text-align: left; /* ou center si tu veux juste le texte au milieu de la carte */
+    overflow: hidden; /* ✅ pour éviter les débordements */
+}
+
+.tickets {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); /* ici min = 300px */
+    gap: 20px;
+    margin: 20px auto;
+    max-width: 1200px;
+    /* padding: 20px; */
+}
+
+.card.ticket {
+    flex: 1 1 calc(30% - 20px); /* environ 3 cartes par ligne */
+    min-width: 350px;            /* largeur minimale */
+    box-sizing: border-box;
+}
+
+
+.ticket h2 {
+    margin: 10px 0;
+    color: hsl(211, 100%, 50%);
+}
+
+.ticket img {
+    margin: 0px 0;
+    width: 100%; /* Remplit la largeur de la carte */
+    height: 300px; /* Remplit la hauteur de la carte */
+    object-fit: cover; /* Ajuste la vidéo pour qu'elle couvre entièrement la carte, en coupant si nécessaire */
+    border-radius: 10px; /* Garde les coins arrondis */
+}
+
+.ticket p {
+    margin: 8px 0;
+    color: black;
+}
+
+/* === Liens d’action === */
+.ticket a {
+    display: inline-block;
+    margin: 5px;
+    padding: 8px 12px;
+    border-radius: 6px;
+    text-decoration: none;
+    font-size: 14px;
+    transition: 0.3s;
+}
+
+.ticket a[href*="modifier_ticket"] {
+    background: #ffc107;
+    color: #222;
+}
+
+.ticket a[href*="supprimer_ticket"] {
+    background: #dc3545;
+    color: white;
+}
+
+.ticket a[href*="Reservez"] {
+    background: #28a745;
+    color: white;
+}
+.btn-reserve{
+     background: #28a745;
+     color: white;
+}
+.ticket a:hover {
+    opacity: 0.8;
+}
+
+/* === Authentification === */
+p a {
+    text-decoration: none;
+    color: black;
+    margin: 0 5px;
+}
+
+
+.navbar {
+    display: flex;
+    justify-content: space-between; /* espace entre gauche et droite */
+    align-items: center; /* alignement vertical centré */
+    padding: 10px 20px;
+    /* background-color: #f8f9fa; optionnel */
+    /* border-bottom: 1px solid #ddd; */
+    background: #fff;
+    border-radius: 0 0 10px 10px;
+    max-width: 2000px;
+    border-left: 1px solid rgb(71, 145, 139);
+    border-top: 1px solid rgb(71, 145, 139);
+    backdrop-filter: blur(30px);
+    -webkit-backdrop-filter: blur(30px);
+        /* backdrop-filter: blur(10px); */
+    box-shadow: 20px 20px 20px -6px rgb(71, 145, 139);
+}
+
+.logo-container img {
+    display: block;
+}
+
+.user {
+    display: flex;
+    gap: 0px; /* espace entre boutons */
+    align-items: center;
+}
+
+.username {
+    margin-right: 10px;
+    font-weight: bold;
+}
+
+/* p a:hover {
+    text-decoration: underline;
+} */
+/* .user{
+    align-items: right;
+    justify-content: right;
+    color: rgb(0, 0, 0);
+    border-radius: 1Opx;
+    font-size: 18px;
+    text-decoration: none;
+    text-align: right;
+    justify-content: flex-end;
+    padding: 20px;
+    margin-right: 20px;
+} */
+
+.search-bar {
+    display: flex;
+    align-items: center;
+    /* justify-content: space-between; logo à gauche, recherche à droite */
+    margin-bottom: 20px;
+}
+
+
+    .logo {
+    height: 90px;   /* ajuste la hauteur */
+    width: auto;    /* garde les proportions */
+    object-fit: contain; /* évite la déformation */
+}
+.btn-vert {
+    background-color: green;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.btn-vert:hover {
+    background-color: darkgreen;
+}
+.btn {
+    /* display: inline-flex;          Pour aligner icône + texte */
+    align-items: right;
+    gap: 6px;                      /* Espace entre icône et texte */
+    padding: 8px 16px;
+    border-radius: 6px;
+    text-decoration: none;
+    font-weight: bold;
+    color: white;
+    transition: background-color 0.3s, transform 0.2s;
+    /* border-left: 1px solid rgb(71, 145, 139);
+    border-top: 1px solid rgb(71, 145, 139); */
+    backdrop-filter: blur(30px);
+    -webkit-backdrop-filter: blur(30px);
+        /* backdrop-filter: blur(10px); */
+   
+}
+
+/* Bouton connexion */
+.btn-connexion {
+    background-color: hsla(134, 61%, 41%, 0); /* vert */
+    border: 1px solid rgb(89, 159, 96);
+    color:  #218838;
+}
+.btn-connexion:hover {
+    background-color: #218838;
+    color: white;
+    transform: scale(1.05);
+}
+
+/* Bouton inscription */
+.btn-inscription {
+    color:  #080808;
+}
+.btn-inscription:hover {
+    transform: scale(1.05);
+}
+
+/* Bouton déconnexion */
+.btn-deconnexion {
+
+    background-color: hsla(134, 61%, 41%, 0); /* vert */
+    border: 2px solid #dc3545;
+    color:  #dc3545;
+    
+}
+.btn-deconnexion:hover {
+    background-color: #c82333;
+    color: white;
+    transform: scale(1.05);
+}
+.username {
+    font-size: 20px;
+    font-weight: bold;
+    color: #2c3e50;
+    /* box-shadow: 20px 20px 20px -6px rgb(71, 145, 139); */
+
+}
+
+.nameuser {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+
+.footer {
+    
+    background:#fff ;
+    color: #222;
+    padding: 20px;
+    text-align: center;
+    border-top:1px solid rgb(71, 145, 139) ;
+}
+
+.social-icons {
+    display: flex;
+    justify-content: center; /* centre horizontal */
+    gap: 15px;
+    margin-bottom: 20px; /* espace entre icônes et copyright */
+}
+
+.social-icons .icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%; /* cercle */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    font-size: 18px;
+    text-decoration: none;
+    transition: 0.3s;
+    border-left: 1px solid rgb(71, 145, 139);
+    border-top: 1px solid rgb(71, 145, 139);
+    backdrop-filter: blur(30px);
+    -webkit-backdrop-filter: blur(30px);
+        /* backdrop-filter: blur(10px); */
+    box-shadow: 20px 20px 20px -6px rgb(71, 145, 139);
+
+}
+
+/* Couleurs */
+.facebook { background: #3b5998; }
+.tiktok   { background: #000000; }
+.twitter  { background: #1DA1F2; }
+
+/* Hover */
+.social-icons .icon:hover {
+    transform: scale(1.1);
+    opacity: 0.8;
+}
+
+.footer p {
+    margin: 0;
+    font-size: 14px;
+}
+
+
+/* Menu central */
+.nav-menu {
+    display: flex;
+    gap: 10px;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+
+}
+
+.nav-menu li a {
+    background-color: white;
+    text-decoration: none;
+    color: #000;
+    transition: color 0.3s;
+}
+
+
+
+/* Panier */
+.cart-container {
+    position: relative;
+}
+
+.cart-icon {
+    position: relative;
+    font-size: 22px;
+    margin-left: 15px;
+    color: #333;
+    text-decoration: none;
+}
+
+.cart-count {
+    position: absolute;
+    top: -8px;
+    right: -10px;
+    background: red;
+    color: white;
+    font-size: 12px;
+    font-weight: bold;
+    padding: 2px 6px;
+    border-radius: 50%;
+}
+
+
+/* Hamburger menu caché par défaut */
+.menu-toggle {
+    display: none;
+    font-size: 26px;
+    cursor: pointer;
+}
+
+/* RESPONSIVE DESIGN */
+
+/* Tablette & mobile */
+@media (max-width: 991px) {
+    .nav-menu {
+        position: absolute;
+        top: 70px;
+        left: 0;
+        right: 0;
+        background: #fff;
+        flex-direction: column;
+        align-items: center;
+        gap: 15px;
+        padding: 20px 0;
+        display: none; /* caché par défaut */
+        z-index: 999;
+        border: 1px solid rgb(71, 145, 139);
+        border-radius:  0 0 10px 10px;
+   
+   
+    }
+
+    .nav-menu.active {
+        display: flex; /* s'affiche quand on clique sur le hamburger */
+    }
+
+    /* Le hamburger apparaît SEULEMENT en mobile */
+    .menu-toggle {
+        display: block;
+    }
+}
+
+@media (max-width: 768px) {
+    .card.ticket img {
+        height: 150px;
+    }
+}
+
+
+
+  .service-btn:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 14px rgba(0, 0, 0, 0.2);
+  }

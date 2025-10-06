@@ -1,0 +1,27 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Modification de produit</title>
+    <link rel="stylesheet" href="{% static 'style1.css' %}">
+    <link rel="stylesheet" href="{% static 'bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'font-awesome.min.css' %}">
+</head>
+<body>
+    <div class="container-fluid px-1 py-3 mx-auto">
+        <div class="row d-flex justify-content-center">
+            <div class="col-xl-7 col-lg-8 col-md-9 col-11 text-center">
+                <div class="card1">
+                    <h1>Modifier le produit</h1>
+                    <form method="post" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        {{ form.as_p }}
+                        <button type="submit">Mettre à jour</button>
+                    </form>
+                    <p><a href="{% url 'liste_produits' %}">⬅ Retour à la liste</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

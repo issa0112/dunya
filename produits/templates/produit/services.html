@@ -1,0 +1,283 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Nos Services</title>
+
+  <!-- ICONES & FONTS -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+  <link href="https://unpkg.com/aos@2.3.4/dist/aos.css" rel="stylesheet">
+  <link rel="stylesheet" href="{% static 'style.css' %}">
+  <script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
+
+  <style>
+    body {
+      font-family: 'Times New Roman', Times, serif;
+      background-color: #f9f9f9;
+      margin: 0;
+      padding: 0;
+    }
+
+    .main-title {
+      text-align: center;
+      margin: 60px 0 40px;
+      font-size: 38px;
+      font-weight: bold;
+      color: #222;
+    }
+
+    .services-page {
+      width: 100%;
+      overflow-x: hidden;
+    }
+
+    .service-section {
+      color: white;
+      padding: 60px 8%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .service-content {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 60px;
+      width: 100%;
+      flex-wrap: nowrap;
+    }
+
+    .service-content.reverse {
+      flex-direction: row-reverse;
+    }
+
+    .service-content img {
+      width: 45%;
+      height: 300px;
+      border-radius: 16px;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+      object-fit: cover;
+    }
+
+    .service-text {
+      width: 50%;
+      line-height: 1.8;
+    }
+
+    .service-text h2 {
+      font-size: 28px;
+      margin-bottom: 15px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .service-text p {
+      font-size: 18px;
+      text-align: justify;
+    }
+    
+.gradient-green {
+  background: linear-gradient(135deg, #1e8e3e 0%, #28a745 50%, #9be15d 100%);
+}
+
+.gradient-orange {
+  background: linear-gradient(120deg, #dd9664ff 0%, #ff8c00 50%, #ffd500 100%);
+  color: #222;
+}
+
+.gradient-purple {
+  background: linear-gradient(135deg, #5e17eb 0%, #8e2de2 50%, #c77dff 100%);
+}
+
+.gradient-blue {
+  background: linear-gradient(135deg, #0048ff 0%, #007bff 50%, #00c6ff 100%);
+}
+
+
+    @media (max-width: 900px) {
+      .service-content {
+        flex-direction: column;
+        text-align: center;
+      }
+      .service-content.reverse {
+        flex-direction: column;
+      }
+      .service-content img, .service-text {
+        width: 100%;
+      }
+      .service-content img {
+        height: auto;
+      }
+    }
+  </style>
+</head>
+
+<body>
+<nav class="navbar">
+    <!-- Logo -->
+    <div class="logo-container">
+        <img src="{% static 'images/logodounya.png' %}" alt="Logo APK" class="logo">
+    </div>
+
+    <!-- Menu principal -->
+    <ul class="nav-menu">
+        <li><a href="{% url 'liste_produits' %}"><i class="bi bi-box-seam"></i> Produit</a></li>
+        <li><a href="{% url 'services' %}"><i class="bi bi-info-circle"></i> Service</a></li>
+        <!-- <li><a href="#"><i class="bi bi-envelope"></i> Contactez-nous</a></li> -->
+    </ul>
+
+    <!-- Zone utilisateur -->
+    <div class="user">
+        {% if user.is_authenticated %}
+            <p class="nameuser">
+                <span class="username">Bonjour {{ user.username }}</span>
+                <a href="{% url 'deconnexion' %}" class="btn btn-deconnexion">
+                    <i class="bi bi-box-arrow-left"></i> Déconnexion
+                </a>
+            </p>
+        {% else %}
+            <a href="{% url 'connexion' %}" class="btn btn-connexion">
+                <i class="bi bi-box-arrow-in-right"></i> Connexion
+            </a>
+            <a href="{% url 'inscription' %}" class="btn btn-inscription">
+                <i class="bi bi-person-badge"></i> S'inscrire
+            </a>
+        {% endif %}
+
+        <!-- Panier -->
+        <a href="{% url 'panier' %}" class="cart-icon">
+            <i class="bi bi-cart4"></i>
+            {% if panier_count %}
+                <span class="cart-count">{{ panier_count }}</span>
+            {% endif %}
+        </a>
+
+    </div>
+
+    <!-- Bouton hamburger pour mobile -->
+    <div class="menu-toggle">
+        <i class="bi bi-list"></i>
+    </div>
+</nav>
+<section class="services-page">
+  <h1 class="main-title" data-aos="fade-down">Nos Services</h1>
+
+  <!-- 🌐 Service 1 -->
+  <div class="service-section gradient-blue" data-aos="fade-right">
+    <div class="service-content">
+      <img src="{% static 'images/dvpimg.jpg' %}" alt="Développement Web">
+      <div class="service-text">
+        <h2><i class="bi bi-laptop"></i> Conception Web & Applications</h2>
+        <p>
+          Nous concevons des sites web modernes et des applications performantes adaptés à vos besoins.
+          Chaque projet est conçu pour refléter fidèlement votre image de marque et garantir une expérience
+          utilisateur optimale. Nos solutions sont rapides, sécurisées et évolutives.
+        </p>
+      </div>
+    </div>
+    
+  </div>
+
+  <!-- 🎓 Service 2 -->
+  <div class="service-section gradient-green" data-aos="fade-left">
+    <div class="service-content reverse">
+      <img src="{% static 'images/formationimg.jpg' %}" alt="Formation Informatique">
+      <div class="service-text">
+        <h2><i class="bi bi-mortarboard"></i> Formation Informatique</h2>
+        <p>
+          Nos formations couvrent la bureautique, le développement web, la maintenance et l’intelligence artificielle.
+          Adaptées à tous les niveaux, elles allient théorie et pratique pour une maîtrise réelle des compétences.
+          Chaque apprenant bénéficie d’un accompagnement personnalisé.
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <!-- 🔧 Service 3 -->
+  <div class="service-section gradient-orange" data-aos="fade-right">
+    <div class="service-content">
+        <img src="{% static 'images/computerimage.jpg' %}" alt="Maintenance & Réparation">     
+        <div class="service-text">
+        <h2><i class="bi bi-tools"></i> Maintenance & Réparation</h2>
+        <p>
+          Nous assurons la maintenance et la réparation complète de vos équipements informatiques.
+          Nos techniciens interviennent rapidement pour assurer la fiabilité et la sécurité de votre matériel,
+          garantissant ainsi un fonctionnement optimal de votre infrastructure.
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <!-- 🛒 Service 4 -->
+  <div class="service-section gradient-purple" data-aos="fade-left">
+    <div class="service-content reverse">
+      <img src="{% static 'images/Venteimage.jpg' %}" alt="Vente d'Équipements">
+      <div class="service-text">
+        <h2><i class="bi bi-cart4"></i> Vente d’Équipements</h2>
+        <p>
+          Nous proposons une large gamme de produits informatiques et électroniques de haute qualité.
+          Chaque équipement est sélectionné pour sa performance et sa durabilité.
+          Nous conseillons nos clients pour leur offrir les meilleures solutions technologiques disponibles.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- Section Contactez-nous -->
+<div class="service-section contact-section" data-aos="fade-up" style="background-color: #fff; color: #222; padding: 60px 8% 60px;">
+  <div class="service-content" style="flex-direction: column; align-items: center; text-align: center; gap: 20px;">
+    <h2 style="font-size: 32px; margin-bottom: 10px;">Contactez-nous</h2>
+    <p style="font-size: 20px; max-width: 600px; line-height: 1.5;">
+      Vous pouvez nous écrire via ce formulaire ou nous contacter directement aux coordonnées ci-dessous :
+    </p>
+
+    <!-- Formulaire -->
+    <form style="display: flex; flex-direction: column; gap: 12px; width: 100%; max-width: 450px; margin-top: 10px;">
+      <input type="email" placeholder="Votre Email" required
+        style="padding: 12px; border-radius: 10px; border: 1px solid #00c6ff; font-size: 15px; background-color: #f9f9f9; color: #222;">
+      <textarea placeholder="Votre message" rows="4" required
+        style="padding: 12px; border-radius: 10px; border: 1px solid #00c6ff; font-size: 15px; background-color: #f9f9f9; color: #222;"></textarea>
+      <button type="submit"
+        style="padding: 12px; border-radius: 10px; border: none; background: linear-gradient(90deg, #007bff, #00c6ff); color: white; font-size: 16px; cursor: pointer; transition: 0.3s;">
+        Envoyer
+      </button>
+    </form>
+
+    <!-- Adresse et contacts -->
+    <div style="margin-top: 20px; font-size: 20px; line-height: 1.6;">
+      <p><strong>Adresse :</strong> Niarela, derrière l'ambassade de la Russie</p>
+      <p><strong>Contacts :</strong> 76 76 08 29 / 66 73 16 07</p>
+    </div>
+  </div>
+</div>
+<footer class="footer">
+    
+    <div class="social-icons">
+        <a href="https://www.facebook.com" target="_blank" class="icon facebook">
+            <i class="bi bi-facebook"></i>
+        </a>
+        <a href="https://www.tiktok.com" target="_blank" class="icon tiktok">
+            <i class="bi bi-tiktok"></i>
+        </a>
+        <a href="https://twitter.com" target="_blank" class="icon twitter">
+            <i class="bi bi-twitter"></i>
+        </a>
+    </div>
+    <p>&copy; 2025 Dounya. Tous droits réservés.</p>
+</footer>
+
+
+<script>
+  AOS.init({
+    duration: 1200,
+    once: true,
+    offset: 100,
+  });
+</script>
+
+</body>
+</html>

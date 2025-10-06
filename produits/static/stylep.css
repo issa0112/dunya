@@ -1,0 +1,365 @@
+body {
+    font-family: "Times New Roman", Times, serif;
+    margin: 0;
+    padding: 0;
+    background: #f8f9fa;
+    color: #333;
+}  
+  
+  
+  
+  
+  /* Reset box-sizing */
+    *, *:before, *:after { box-sizing: border-box; }
+
+    .checkout-wrapper {
+      max-width: 1100px;
+      margin: 18px auto;
+      padding: 12px;
+      font-family: Arial, Helvetica, sans-serif;
+    }
+
+    /* deux colonnes : float-based */
+    .col-left, .col-right {
+      background: #fff;
+      border-radius: 8px;
+      padding: 16px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.04);
+      gap: 10px;
+    
+        /* max-width: 2000px; */
+        border: 1px solid rgb(71, 145, 139);
+        backdrop-filter: blur(30px);
+        -webkit-backdrop-filter: blur(30px);
+        backdrop-filter: blur(10px);
+        box-shadow: 20px 20px 20px -6px rgb(71, 145, 139);
+        /* margin-bottom: 20px; */
+    }
+
+    .col-left {
+      float: left;
+      width: 48%;
+      margin-right: 2%;
+    }
+
+    .col-right {
+      float: right;
+      width: 48%;
+    }
+
+    /* petits styles */
+    h2.section-title { margin-top: 0; margin-bottom: 12px; font-size: 1.15rem; }
+    .field { margin-bottom: 10px; }
+    .field label { display:block; font-size:0.92rem; margin-bottom:4px; }
+    .form-control { width: 100%; padding:8px 10px; border:1px solid #ccc; border-radius:4px; }
+
+    .product-item { padding:10px 0; border-bottom:1px solid #f0f0f0; }
+    .product-item:last-child { border-bottom: none; }
+    .muted { color:#666; font-size:0.9rem; }
+
+    .btn { display:inline-block; padding:8px 14px; border-radius:6px; text-decoration:none; cursor:pointer; }
+    .btn-primary { background:#198754; color:white; border:none; }
+    .btn-danger { background:#dc3545; color:white; border:none; }
+
+    .small-link { color:#dc3545; text-decoration:none; font-size:0.9rem; }
+
+    /* clear floats */
+    .clearfix::after { content: ""; display: table; clear: both; }
+
+
+form input{
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    outline: none;
+    font-size: 14px;
+}
+    /* responsive: stack columns under 820px */
+    @media (max-width: 820px) {
+      .col-left, .col-right {
+        float: none;
+        width: 100%;
+        margin-right: 0;
+        margin-bottom: 12px;
+    
+      }
+    }
+.navbar {
+    display: flex;
+    justify-content: space-between; /* espace entre gauche et droite */
+    align-items: center; /* alignement vertical centré */
+    padding: 10px 20px;
+    /* background-color: #f8f9fa; optionnel */
+    /* border-bottom: 1px solid #ddd; */
+    background: #fff;
+    border-radius: 0 0 10px 10px;
+    max-width: 2000px;
+    border-left: 1px solid rgb(71, 145, 139);
+    border-top: 1px solid rgb(71, 145, 139);
+    backdrop-filter: blur(30px);
+    -webkit-backdrop-filter: blur(30px);
+        /* backdrop-filter: blur(10px); */
+    box-shadow: 20px 20px 20px -6px rgb(71, 145, 139);
+}
+
+.logo-container img {
+    display: block;
+}
+
+.user {
+    display: flex;
+    gap: 0px; /* espace entre boutons */
+    align-items: center;
+}
+/* 
+.username {
+    margin-right: 10px;
+    font-weight: bold;
+} */
+
+.search-bar {
+    display: flex;
+    align-items: center;
+    /* justify-content: space-between; logo à gauche, recherche à droite */
+    margin-bottom: 20px;
+}
+
+
+    .logo {
+    height: 90px;   /* ajuste la hauteur */
+    width: auto;    /* garde les proportions */
+    object-fit: contain; /* évite la déformation */
+}
+.btn-vert {
+    background-color: green;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.btn-vert:hover {
+    background-color: darkgreen;
+}
+.btn {
+    /* display: inline-flex;          Pour aligner icône + texte */
+    align-items: right;
+    gap: 8px;                      /* Espace entre icône et texte */
+    padding: 8px 16px;
+    border-radius: 6px;
+    text-decoration: none;
+    font-weight: bold;
+    color: white;
+    transition: background-color 0.3s, transform 0.2s;
+    /* border-left: 1px solid rgb(71, 145, 139);
+    border-top: 1px solid rgb(71, 145, 139); */
+    backdrop-filter: blur(30px);
+    -webkit-backdrop-filter: blur(30px);
+        /* backdrop-filter: blur(10px); */
+   
+}
+
+/* Bouton connexion */
+.btn-connexion {
+    background-color: hsla(134, 61%, 41%, 0); /* vert */
+    border: 1px solid rgb(89, 159, 96);
+    color:  #218838;
+}
+.btn-connexion:hover {
+    background-color: #218838;
+    color: white;
+    transform: scale(1.05);
+}
+
+/* Bouton inscription */
+.btn-inscription {
+    color:  #080808;
+}
+.btn-inscription:hover {
+    transform: scale(1.05);
+}
+
+
+/* Bouton déconnexion */
+.btn-deconnexion {
+
+    background-color: hsla(134, 61%, 41%, 0); /* vert */
+    border: 2px solid #dc3545;
+    color:  #dc3545;
+    
+}
+.btn-deconnexion:hover {
+    background-color: #c82333;
+    color: white;
+    transform: scale(1.05);
+}
+.username {
+    font-size: 20px;
+    font-weight: bold;
+    color: #2c3e50;
+    /* box-shadow: 20px 20px 20px -6px rgb(71, 145, 139); */
+
+}
+
+.nameuser {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+ul li a {
+    display: inline-block;
+    padding: 10px;
+    background: #e9ecef;
+    border-radius: 6px;
+    text-decoration: none;
+    color: #333;
+    font-size: 18px;
+    transition: 0.3s;
+    display: inline-block;
+    transition: transform 0.2s ease;
+}
+
+
+ul li a:hover {
+    transform: scale(1.1); /* grossit légèrement */
+}
+
+.footer {
+    
+    background:#fff ;
+    color: #222;
+    padding: 20px;
+    text-align: center;
+    border-top:1px solid rgb(71, 145, 139) ;
+}
+
+.social-icons {
+    display: flex;
+    justify-content: center; /* centre horizontal */
+    gap: 15px;
+    margin-bottom: 20px; /* espace entre icônes et copyright */
+}
+
+.social-icons .icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%; /* cercle */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    font-size: 18px;
+    text-decoration: none;
+    transition: 0.3s;
+    border-left: 1px solid rgb(71, 145, 139);
+    border-top: 1px solid rgb(71, 145, 139);
+    backdrop-filter: blur(30px);
+    -webkit-backdrop-filter: blur(30px);
+        /* backdrop-filter: blur(10px); */
+    box-shadow: 20px 20px 20px -6px rgb(71, 145, 139);
+
+}
+
+/* Couleurs */
+.facebook { background: #3b5998; }
+.tiktok   { background: #000000; }
+.twitter  { background: #1DA1F2; }
+
+/* Hover */
+.social-icons .icon:hover {
+    transform: scale(1.1);
+    opacity: 0.8;
+}
+
+.footer p {
+    margin: 0;
+    font-size: 14px;
+}
+
+
+/* Menu central */
+.nav-menu {
+    display: flex;
+    gap: 10px;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+
+}
+
+.nav-menu li a {
+    background-color: white;
+    text-decoration: none;
+    color: #000;
+    transition: color 0.3s;
+}
+
+
+
+/* Panier */
+.cart-container {
+    position: relative;
+}
+
+
+.cart-icon {
+    position: relative;
+    font-size: 22px;
+    margin-left: 15px;
+    color: #333;
+    text-decoration: none;
+}
+
+.cart-count {
+    position: absolute;
+    top: -8px;
+    right: -10px;
+    background: red;
+    color: white;
+    font-size: 12px;
+    font-weight: bold;
+    padding: 2px 6px;
+    border-radius: 50%;
+}
+
+
+/* Hamburger menu caché par défaut */
+.menu-toggle {
+    display: none;
+    font-size: 26px;
+    cursor: pointer;
+}
+
+/* RESPONSIVE DESIGN */
+
+/* Tablette & mobile */
+@media (max-width: 991px) {
+    .nav-menu {
+        position: absolute;
+        top: 70px;
+        left: 0;
+        right: 0;
+        background: #fff;
+        flex-direction: column;
+        align-items: center;
+        gap: 15px;
+        padding: 20px 0;
+        display: none; /* caché par défaut */
+        z-index: 999;
+        border: 1px solid rgb(71, 145, 139);
+        border-radius:  0 0 10px 10px;
+        
+    }
+
+    .nav-menu.active {
+        display: flex; /* s'affiche quand on clique sur le hamburger */
+    }
+
+    /* Le hamburger apparaît SEULEMENT en mobile */
+    .menu-toggle {
+        display: block;
+    }
+}

@@ -1,0 +1,113 @@
+
+
+
+
+/* Section principale */
+.main {
+        display: flex;
+        flex-wrap: wrap;   /* permet le retour à la ligne */
+        gap: 20px;         /* espace entre les cartes */
+        justify-content: flex-start; /* aligne à gauche (ou center pour centrer) */
+        margin: 20px auto;
+        max-width: 1200px; /* limite la largeur totale pour garder un beau rendu */
+
+        color: #222;
+        /* padding: 50px 10%; */
+        /* margin: 20px; */
+        margin-bottom: 30px;
+        background: rgba(255, 255, 255, 0.06);
+        padding: 20px;
+        border-radius: 20px;
+        border-left: 1px solid rgb(71, 145, 139);
+        border-top: 1px solid rgb(71, 145, 139);
+        /* backdrop-filter: blur(10px); */
+        box-shadow: 20px 20px 20px -6px rgb(71, 145, 139);
+        /* text-align: center; */
+        /* position: relative; */
+        transition: all 0.2s ease-in-out;
+}
+
+/* Cartes d'album et vidéo */
+.card {
+    background: rgba(255, 255, 255, 0.06);
+    padding: 20px;
+    border-radius: 20px;
+    border-left: 1px solid rgb(71, 145, 139);
+    border-top: 1px solid rgb(71, 145, 139);
+    backdrop-filter: blur(30px);
+    -webkit-backdrop-filter: blur(30px);
+     /* largeur fixe de chaque ticket */
+    text-align: center;
+    transition: all 0.2s ease-in-out;
+}
+.main a {
+    display: inline-block;
+    margin: 5px;
+    padding: 8px 12px;
+    border-radius: 6px;
+    text-decoration: none;
+    font-size: 14px;
+    transition: 0.3s;
+}
+
+.main a[href*="modifier_ticket"] {
+    background: #ffc107;
+    color: #222;
+}
+
+.main a[href*="supprimer_ticket"] {
+    background: #dc3545;
+    color: white;
+}
+
+.main a[href*="Reservez"] {
+    background: #28a745;
+    color: white;
+}
+
+.ticket a:hover {
+    opacity: 0.8;
+}
+    
+.card:hover {
+    box-shadow: inset 4px 4px 6px -1px rgba(0,0,0,0.2),
+            inset -4px -4px 6px -1px rgba(255,255,255,0.7),
+            -0.5px -0.5px 0px rgba(255,255,255,1),
+            0.5px 0.5px 0px rgba(0,0,0,0.15),
+            0px 12px 10px -10px rgba(0,0,0,0.05);
+    border: 1px solid rgba(0,0,0,0.1);
+    transform: translateY(0.5em);
+    }
+.bt svg {
+    transition: transform 0.5s;
+    }
+.card:hover svg {
+    transform: scale(0.9);
+    fill: #333333;
+    }
+
+    
+    img {
+        width: 100%; /* Remplit la largeur de la carte */
+        height: 200px; /* Remplit la hauteur de la carte */
+        object-fit: cover; /* Ajuste la vidéo pour qu'elle couvre entièrement la carte, en coupant si nécessaire */
+        border-radius: 8px; /* Garde les coins arrondis */
+    }
+
+
+
+
+/* Liste d'albums et vidéos */
+.list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px; /* Espace entre les cartes vidéo augmenté */
+    justify-content: start;
+}
+
+.list-item {
+    flex: 1 1 calc(20% - 10px); /* Ajuster la taille des éléments en fonction de l'espace disponible */
+    box-sizing: border-box;
+    margin: 5px; /* Réduire la marge autour de chaque album */
+}
+

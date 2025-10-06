@@ -1,0 +1,54 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Mes commandes</title>
+    <link rel="stylesheet" href="{% static 'bootstrap.min.css' %}">
+</head>
+<body class="container py-4">
+
+    <h2>📦 Mes commandes</h2>
+    <a href="{% url 'liste_produits' %}" class="btn btn-primary mb-3">← Continuer mes achats</a>
+
+    {% if commandes %}
+        <div class="accordion" id="commandesAccordion">
+            {% for commande in commandes %}
+                <div class="accordion-item mb-2">
+                    <h2 class="accordion-header" id="heading{{ commande.id }}">
+                        <button class="accordion-button collapsed" type="button"
+                                data-bs-toggle="collapse" data-bs-target="#collapse{{ commande.id }}">
+                            Commande #{{ commande.id }} - {{ commande.date|date:"d/m/Y H:i" }} 
+                            | Total : {{ commande.total }} FCFA 
+                            | Paiement : {{ commande.mode_paiement }}
+                        </button>
+                    </h2>
+                    <div id="collapse{{ commande.id }}" class="accordion-collapse collapse"
+                         data-bs-parent="#commandesAccordion">
+                        <div class="accordion-body">
+                            <p><strong>Nom :</strong> {{ commande.nom }} {{ commande.prenom }}</p>
+                            <p><strong>Email :</strong> {{ commande.email }}</p>
+                            <p><strong>Téléphone :</strong> {{ commande.telephone }}</p>
+                            <p><strong>Adresse :</strong> {{ commande.adresse }}</p>
+
+                            <h5>Produits :</h5>
+                            <ul>
+                                {% for ligne in commande.lignes.all %}
+                                    <li>
+                                        {{ ligne.quantite }} x {{ ligne.produit.nom }}
+                                        — {{ ligne.prix_unitaire }} FCFA (Sous-total : {{ ligne.sous_total }})
+                                    </li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <p>Vous n’avez pas encore passé de commande.</p>
+    {% endif %}
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

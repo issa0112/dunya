@@ -1,0 +1,383 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Liste des produits</title>
+    <link rel="stylesheet" href="{% static 'style.css' %}">
+    <link rel="stylesheet" href="{% static 'stylevid.css' %}">
+    <link rel="stylesheet" href="{% static 'style1.css' %}">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <style>
+        .quantite {
+            transition: color 0.5s ease;
+            font-weight: bold;
+        }
+        .red { color: red; }
+        .orange { color: orange; }
+        .green { color: green; }
+
+        .search-input {
+                display: block;     /* s’assure qu’il prend sa ligne */
+                margin-left: 0;     /* aligne à gauche */
+                
+}
+
+    </style>
+</head>
+<body>
+
+<!-- Barre de recherche / filtres -->
+<nav class="navbar">
+    <!-- Logo -->
+    <div class="logo-container">
+        <img src="{% static 'images/logodounya.png' %}" alt="Logo APK" class="logo">
+    </div>
+
+    <!-- Menu principal -->
+    <ul class="nav-menu">
+        <li><a href="{% url 'liste_produits' %}"><i class="bi bi-box-seam"></i> Produit</a></li>
+        <li><a href="{% url 'services' %}"><i class="bi bi-info-circle"></i> Service</a></li>
+        <!-- <li><a href="#"><i class="bi bi-envelope"></i> Contactez-nous</a></li> -->
+    </ul>
+
+    <!-- Zone utilisateur -->
+    <div class="user">
+        {% if user.is_authenticated %}
+            <p class="nameuser">
+                <span class="username">Bonjour {{ user.username }}</span>
+                <a href="{% url 'deconnexion' %}" class="btn btn-deconnexion">
+                    <i class="bi bi-box-arrow-left"></i> Déconnexion
+                </a>
+            </p>
+        {% else %}
+            <a href="{% url 'connexion' %}" class="btn btn-connexion">
+                <i class="bi bi-box-arrow-in-right"></i> Connexion
+            </a>
+            <a href="{% url 'inscription' %}" class="btn btn-inscription">
+                <i class="bi bi-person-badge"></i> S'inscrire
+            </a>
+        {% endif %}
+
+        <!-- Panier -->
+        <a href="{% url 'panier' %}" class="cart-icon">
+            <i class="bi bi-cart4"></i>
+            {% if panier_count %}
+                <span class="cart-count">{{ panier_count }}</span>
+            {% endif %}
+        </a>
+
+    </div>
+
+    <!-- Bouton hamburger pour mobile -->
+    <div class="menu-toggle">
+        <i class="bi bi-list"></i>
+    </div>
+</nav>
+
+
+
+    {% comment %} <form method="get" action="{% url 'liste_produits' %}">
+        
+        <!-- Filtre par produit -->
+        {% comment %} <select name="produit">
+            <option value="">Tous les produits</option>
+            {% for produit in produits_all %}
+                <option value="{{ produit.id }}" {% if produit.id == produit_id %}selected{% endif %}>
+                    {{ produit.nom }}
+                </option>
+            {% endfor %}
+        </select> 
+
+        <!-- Filtre par catégorie -->
+        <select name="categorie">
+            <option value="">Toutes les catégories</option>
+            {% for cat in categories %}
+                <option value="{{ cat.id }}" {% if cat.id == categorie_id %}selected{% endif %}>
+                    {{ cat.nom }}
+                </option>
+            {% endfor %}
+        </select>
+
+        <!-- Filtre prix -->
+        <input type="number" name="min_price" placeholder="Prix min" value="{{ min_price }}">
+        <input type="number" name="max_price" placeholder="Prix max" value="{{ max_price }}">
+
+        <button type="submit">Rechercher</button>
+
+        <!-- Tri -->
+        {% comment %} <select name="sort_by">
+            <option value="prix" {% if request.GET.sort_by == 'prix' %}selected{% endif %}>Prix</option>
+            <option value="nom" {% if request.GET.sort_by == 'nom' %}selected{% endif %}>Nom</option>
+        </select> 
+
+        <select name="order">
+            <option value="asc" {% if request.GET.order == 'asc' %}selected{% endif %}>Croissant</option>
+            <option value="desc" {% if request.GET.order == 'desc' %}selected{% endif %}>Décroissant</option>
+        </select>
+    </form> {% endcomment %}
+</div>
+
+<!-- User connecté -->
+
+
+{% comment %} <h1>Catégories</h1>
+<ul>
+    {% for cat in categories %}
+        <li>
+            <a href="{% url 'liste_produits' %}?categorie={{ cat.id }}"
+               {% if cat.id == categorie_id %}style="font-weight:bold;color:#007BFF;"{% endif %}>
+                {{ cat.nom }}
+            </a>
+        </li>
+    {% empty %}
+        <li>Aucune catégorie disponible</li>
+    {% endfor %}
+</ul> {% endcomment %}
+
+<h1>Nos Produits</h1>
+<div class="search-filter-container">
+    <form method="get" action="{% url 'liste_produits' %}" class="search-form">
+        
+        <!-- Recherche à gauche -->
+        <div class="search-left">
+            <input id="searchProduit" name="q" class="search-input" placeholder="Rechercher..."
+                style="padding:10px; border:1px solid #007bff; border-radius:8px; width:200px;">
+        </div>
+
+        <!-- Filtres à droite -->
+        <div class="filters-right">
+            <!-- Filtre par catégorie -->
+            <select name="categorie">
+                <option value="">Toutes les catégories</option>
+                {% for cat in categories %}
+                    <option value="{{ cat.id }}" {% if cat.id == categorie_id %}selected{% endif %}>
+                        {{ cat.nom }}
+                    </option>
+                {% endfor %}
+            </select>
+
+            <!-- Filtre prix -->
+            <input type="number" name="min_price" placeholder="Prix min" value="{{ min_price }}">
+            <input type="number" name="max_price" placeholder="Prix max" value="{{ max_price }}">
+
+            <!-- Tri -->
+            <select name="order">
+                <option value="asc" {% if request.GET.order == 'asc' %}selected{% endif %}>Croissant</option>
+                <option value="desc" {% if request.GET.order == 'desc' %}selected{% endif %}>Décroissant</option>
+            </select>
+
+            <button type="submit">Rechercher</button>
+        </div>
+    </form>
+</div>
+
+<div class="tickets">
+    {% for produit in produits %}
+        <div class="card ticket" onclick= "window.location.href='{% url 'detail_produit' produit.id %}';" style="cursor:pointer;">
+            {% if produit.image %}
+                <img src="{{ produit.image.url }}" alt="{{ produit.nom }}">
+            {% endif %}
+            <h2>{{ produit.nom }}</h2>
+            <h4><strong>Prix :</strong> {{ produit.prix }} FCFA</h4>
+            <h3 class="quantite {{ produit.statut_quantite }}">
+                Quantité : {{ produit.quantite }}
+            </h3>
+
+            
+
+            <p>
+                {% comment %} <strong>Catégorie :</strong> {{ produit.categorie.nom }} <br>
+                {% if produit.date_expiration %}
+                    <strong>Date d’expiration :</strong> {{ produit.date_expiration|date:"d/m/Y" }}<br>
+                {% endif %} {% endcomment %}
+
+                {% if user.is_superuser %}
+                    <a href="{% url 'modifier_produit' produit.id %}">
+                        <i class="bi bi-pencil-square"></i> Modifier
+                    </a>
+                    <a href="{% url 'supprimer_produit' produit.id %}">
+                        <i class="bi bi-trash3"></i> Supprimer
+                    </a><br>
+                {% endif %}
+            </p>
+
+            {% if produit.quantite > 0 and produit.disponible %}
+                {% if user.is_authenticated %}
+                    <a href="{% url 'ajouter_panier' produit.id %}" class="btn-reserve">
+                        <i class="bi bi-cart-plus"></i> Ajouter au panier
+                    </a>
+                {% else %}
+                    <button class="btn-reserve btn-vert" onclick="alert('Vous devez vous connecter pour ajouter au panier.');">
+                        <i class="bi bi-cart-check"></i> Ajouter au panier
+                    </button>
+                {% endif %}
+            {% else %}
+                <button class="btn-reserve" disabled style="opacity:0.5;cursor:not-allowed;">
+                    <i class="bi bi-cart-x"></i> Indisponible
+                </button>
+            {% endif %}
+        </div>
+    {% empty %}
+        <p>Aucun produit disponible pour le moment.</p>
+    {% endfor %}
+</div>
+
+<!-- ===================== NOS SERVICES ===================== -->
+<section class="nos-services" style="margin-top:60px; text-align:center;">
+    <h2 style="font-size:28px; font-weight:bold; margin-bottom:30px;">Nos Services</h2>
+    <p style="font-size:20px; max-width:700px; margin:0 auto 40px; color:#555;">
+        Découvrez les principaux services que nous offrons pour accompagner vos besoins numériques et technologiques.
+    </p>
+
+    <div class="services-container">
+        <!-- Service 1 -->
+        <a href="#" class="service-btn gradient-blue">
+            <i class="bi bi-laptop" style="font-size:35px; display:block; margin-bottom:10px;"></i>
+            Conception Web & Applications
+        </a>
+
+    <!-- Service 2 -->
+        <a href="#" class="service-btn gradient-green">
+            <i class="bi bi-mortarboard" style="font-size:35px; display:block; margin-bottom:10px;"></i>
+            Formation Informatique
+        </a>
+
+        <!-- Service 3 -->
+        <a href="#" class="service-btn gradient-orange">
+            <i class="bi bi-tools" style="font-size:35px; display:block; margin-bottom:10px;"></i>
+            Maintenance & Réparation
+        </a>
+
+        <!-- Service 4 -->
+        <a href="{% url 'services' %}" class="service-btn gradient-purple">
+            <i class="bi bi-cart4" style="font-size:35px; display:block; margin-bottom:10px;"></i>
+            Vente d’Équipements
+        </a>
+    </div>
+</section>
+
+<!-- ===================== STYLE ===================== -->
+<style>
+  .services-container {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 25px;
+    margin-bottom:50px;
+  }
+
+  .service-btn {
+    flex: 1 1 220px;
+    max-width: 300px;
+    color: white;
+    text-decoration: none;
+    padding: 35px 25px;
+    border-radius: 18px;
+    font-size: 18px;
+    font-weight: 600;
+    text-align: center;
+    box-shadow: 0 6px 14px rgba(0, 0, 0, 0.2);
+    transition: all 0.3s ease;
+  }
+
+  .service-btn:hover {
+    transform: translateY(-6px) scale(1.02);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.25);
+  }
+
+  /* Dégradés personnalisés */
+  .gradient-blue {
+    background: linear-gradient(90deg, #007bff, #00c6ff);
+  }
+
+  .gradient-green {
+    background: linear-gradient(135deg, #28a745, #9be15d);
+  }
+
+  .gradient-orange {
+    background: linear-gradient(135deg, #ff8c00, #ffcc70);
+    color: #222;
+  }
+
+  .gradient-purple {
+    background: linear-gradient(90deg, #9749dcff, #4a00e0);
+  }
+
+  @media (max-width: 768px) {
+    .service-btn {
+      max-width: 100%;
+      font-size: 16px;
+      padding: 25px 20px;
+    }
+  }
+</style>
+
+
+
+
+
+
+<footer class="footer">
+    
+    <div class="social-icons">
+        <a href="https://www.facebook.com" target="_blank" class="icon facebook">
+            <i class="bi bi-facebook"></i>
+        </a>
+        <a href="https://www.tiktok.com" target="_blank" class="icon tiktok">
+            <i class="bi bi-tiktok"></i>
+        </a>
+        <a href="https://twitter.com" target="_blank" class="icon twitter">
+            <i class="bi bi-twitter"></i>
+        </a>
+    </div>
+    <p>&copy; 2025 Dounya. Tous droits réservés.</p>
+</footer>
+
+
+
+<script>
+  const searchInput = document.getElementById("searchProduit");
+  const produitsGrid = document.querySelector(".tickets"); // ta grille
+
+  if (searchInput && produitsGrid) {
+    searchInput.addEventListener("keyup", () => {
+      const val = searchInput.value.trim().toLowerCase();
+      let anyVisible = false; // pour vérifier si au moins un produit correspond
+
+      produitsGrid.querySelectorAll(".card.ticket").forEach(div => {
+        const text = div.innerText.toLowerCase();
+        const isMatch = text.includes(val);
+        div.style.display = isMatch ? "" : "none";
+        if (isMatch) anyVisible = true;
+      });
+
+      // Optionnel : afficher un message si aucun produit trouvé
+      if (!anyVisible) {
+        if (!document.getElementById("noResults")) {
+          const msg = document.createElement("p");
+          msg.id = "noResults";
+          msg.textContent = "Aucun produit trouvé.";
+          produitsGrid.appendChild(msg);
+        }
+      } else {
+        const msg = document.getElementById("noResults");
+        if (msg) msg.remove();
+      }
+    });
+  }
+
+
+ 
+    const toggle = document.querySelector(".menu-toggle");
+    const menu = document.querySelector(".nav-menu");
+
+    toggle.addEventListener("click", () => {
+        menu.classList.toggle("active");
+    });
+
+
+</script>
+
+
+</body>
+</html>

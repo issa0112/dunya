@@ -1,0 +1,30 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Inscription</title>
+    <link rel="stylesheet" href="{% static 'style1.css' %}">
+    <link rel="stylesheet" href="{% static 'bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'font-awesome.min.css' %}">
+    
+</head>
+<body>
+    <div class="container-fluid px-1 py-3 mx-auto"> <!-- Diminution du padding vertical -->
+        <div class="row d-flex justify-content-center">
+            <div class="col-xl-7 col-lg-8 col-md-9 col-11 text-center">
+                <div class="card2">
+        
+                    <h2>Créer un compte</h2>
+                    <form method="post">
+                        {% csrf_token %}
+                        {{ form.as_p }}
+                        <button type="submit">S'inscrire</button>
+                    </form>
+                        <p>Déjà inscrit ? <a href="{% url 'connexion' %}">Connexion</a></p>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Tickets par agence</title>
+{% load static %}
+</head>
+<body>
+<h2>LES TICKETS DE CETTE AGENCE SONT: {{ agence.nom }}</h2>
+{% for ticket in tickets %}
+    <div>
+        <h3>{{ ticket.nom }}</h3>
+        <p>{{ ticket.description }}</p>
+        <p>{{ ticket.prix }} FCFA</p>
+    </div>
+{% empty %}
+    <p>Aucun ticket dans cette agence.</p>
+{% endfor %}
+</body>
+</html>

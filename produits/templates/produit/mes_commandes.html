@@ -1,0 +1,43 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Mes commandes</title>
+    <link rel="stylesheet" href="{% static 'style1.css' %}">
+    <link rel="stylesheet" href="{% static 'bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'font-awesome.min.css' %}">
+</head>
+<body>
+    <div class="container-fluid px-1 py-3 mx-auto">
+        <div class="row d-flex justify-content-center">
+            <div class="col-xl-7 col-lg-8 col-md-9 col-11 text-center">
+                <div class="card1">
+                    <h2>Mes commandes</h2>
+                    <a href="{% url 'liste_produits' %}" class="button1">
+                        <i class="bi bi-arrow-return-left"></i> Retour à la liste
+                    </a>
+                    
+                    {% if commandes %}
+                        {% for commande in commandes %}
+                            <div style="border:1px solid #ccc; margin-bottom:10px; padding:10px; text-align:left;">
+                                <strong>Commande n°{{ commande.id }}</strong><br>
+                                Date : {{ commande.date|date:"d/m/Y H:i" }}<br>
+                                Total : {{ commande.total }} FCFA<br>
+                                Statut : {% if commande.paye %}<span style="color:green;">Payée</span>{% else %}<span style="color:red;">Non payée</span>{% endif %}
+                                <br>
+                                <ul>
+                                    {% for ligne in commande.lignes.all %}
+                                        <li>{{ ligne.produit.nom }} – {{ ligne.quantite }} × {{ ligne.prix_unitaire }} FCFA = {{ ligne.sous_total }} FCFA</li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                        {% endfor %}
+                    {% else %}
+                        <p>Aucune commande passée pour le moment.</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

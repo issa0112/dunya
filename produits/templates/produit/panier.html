@@ -1,0 +1,195 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <title>Checkout - Mon Panier</title>
+  <link rel="stylesheet" href="{% static 'stylep.css' %}">
+  {# <link rel="stylesheet" href="{% static 'style.css' %}"> #}
+  <link rel="stylesheet" href="{% static 'bootstrap.min.css' %}"> 
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+</head>
+<body>
+
+<!-- ==================== NAVBAR ==================== -->
+<nav class="navbar">
+    <!-- Logo -->
+    <div class="logo-container">
+        <img src="{% static 'images/logodounya.png' %}" alt="Logo APK" class="logo">
+    </div>
+
+    <!-- Menu principal -->
+    <ul class="nav-menu">
+        <li><a href="{% url 'liste_produits' %}"><i class="bi bi-box-seam"></i> Produit</a></li>
+        <li><a href="{% url 'services' %}"><i class="bi bi-info-circle"></i> Service</a></li>
+        <!-- <li><a href="#"><i class="bi bi-envelope"></i> Contactez-nous</a></li> -->
+    </ul>
+
+    <!-- Zone utilisateur -->
+    <div class="user">
+        {% if user.is_authenticated %}
+            <p class="nameuser">
+                <span class="username">Bonjour {{ user.username }}</span>
+                <a href="{% url 'deconnexion' %}" class="btn btn-deconnexion">
+                    <i class="bi bi-box-arrow-left"></i> Déconnexion
+                </a>
+            </p>
+        {% else %}
+            <a href="{% url 'connexion' %}" class="btn btn-connexion">
+                <i class="bi bi-box-arrow-in-right"></i> Connexion
+            </a>
+            <a href="{% url 'inscription' %}" class="btn btn-inscription">
+                <i class="bi bi-person-badge"></i> S'inscrire
+            </a>
+        {% endif %}
+
+        <!-- Panier -->
+        <a href="{% url 'panier' %}" class="cart-icon">
+            <i class="bi bi-cart4"></i>
+            {% if panier_count %}
+                <span class="cart-count">{{ panier_count }}</span>
+            {% endif %}
+        </a>
+
+    </div>
+
+    <!-- Bouton hamburger pour mobile -->
+    <div class="menu-toggle">
+        <i class="bi bi-list"></i>
+    </div>
+</nav>
+
+<!-- ==================== CHECKOUT WRAPPER ==================== -->
+<form method="POST" action="{% url 'valider_panier' %}">
+  {% csrf_token %}
+  <div class="checkout-wrapper" style="display:flex; justify-content: {% if afficher_formulaire %}space-between{% else %}center{% endif %}; flex-wrap: wrap;">
+
+    {% if afficher_formulaire %}
+    <div class="col-left" style="width:40%;">
+      <h2 class="section-title">Informations du client</h2>
+      <div class="field"><label>Nom</label><input class="form-control" type="text" name="nom" placeholder="Votre nom" required></div>
+      <div class="field"><label>Prénom</label><input class="form-control" type="text" name="prenom" placeholder="Votre prénom" required></div>
+      <div class="field"><label>Email</label><input class="form-control" type="email" name="email" placeholder="Votre email" required></div>
+      <div class="field"><label>Téléphone</label><input class="form-control" type="text" name="telephone" placeholder="77xxxxxxx" required></div>
+      <div class="field"><label>Adresse</label><textarea class="form-control" name="adresse" rows="4" placeholder="Votre adresse" required></textarea></div>
+    </div>
+    {% endif %}
+
+    <div class="col-right" style="width: {% if afficher_formulaire %}55%{% else %}60%{% endif %};">
+      <h2 class="section-title">Contenu du panier</h2>
+      {% if produits %}
+        {% for item in produits %}
+          <div class="product-item" style="border:1px solid #ccc; padding:10px; margin-bottom:10px; border-radius:6px;">
+            <strong>{{ item.produit.nom }}</strong>
+            <div>Quantité : {{ item.quantite }} — Prix unitaire : {{ item.produit.prix }} FCFA</div>
+            <div><strong>Sous-total : {{ item.sous_total }} FCFA</strong></div>
+            <div><a href="{% url 'annuler_du_panier' item.produit.id %}" style="color:red; text-decoration:none;">Retirer</a></div>
+          </div>
+        {% endfor %}
+
+        <div style="margin-top:20px; font-size:18px;">
+          <strong>Total général : {{ total_general }} FCFA</strong>
+        </div>
+
+        <hr style="margin:12px 0; border-color:#eee;">
+       <!-- Choix du mode de paiement -->
+          <h2 class="section-title">Méthode de paiement</h2>
+
+            <div class="field">
+              <label><input type="radio" name="paiement" value="livraison" onclick="togglePaymentOptions()"> Paiement à la livraison</label>
+            </div>
+            <div class="field">
+              <label><input type="radio" name="paiement" value="carte" onclick="togglePaymentOptions()"> Paiement par carte bancaire</label>
+            </div>
+            <div class="field">
+              <label><input type="radio" name="paiement" value="mobile" onclick="togglePaymentOptions()"> Mobile Money</label>
+            </div>
+
+            <!-- Carte -->
+            <div id="carte-section" style="display:none; margin-top:10px;">
+              <div class="field"><label>Numéro de la carte</label>
+                <input class="form-control" type="text" name="carte_numero" placeholder="1234 5678 9012 3456"></div>
+              <div style="display:flex; gap:10px;">
+                <div style="flex:1;">
+                  <div class="field"><label>Date d'expiration (MM/AA)</label>
+                    <input class="form-control" type="text" name="carte_expiration" placeholder="MM/AA"></div>
+                </div>
+                <div style="width:120px;">
+                  <div class="field"><label>CVV</label>
+                    <input class="form-control" type="text" name="carte_cvv" placeholder="123"></div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Mobile money -->
+            <div id="money-options" style="display:none; margin-top:10px;">
+              <div class="field"><label><input type="radio" name="moneyType" value="orange" onclick="showMoneyForm('orange')"> Orange Money</label></div>
+              <div id="form-orange" style="display:none; margin-top:6px;">
+                <input class="form-control" type="text" name="orange_numero" placeholder="77xxxxxxx">
+              </div>
+
+              <div class="field" style="margin-top:8px;"><label><input type="radio" name="moneyType" value="moov" onclick="showMoneyForm('moov')"> Moov Money</label></div>
+              <div id="form-moov" style="display:none; margin-top:6px;">
+                <input class="form-control" type="text" name="moov_numero" placeholder="66xxxxxxx">
+              </div>
+
+              <div class="field" style="margin-top:8px;"><label><input type="radio" name="moneyType" value="wave" onclick="showMoneyForm('wave')"> Wave</label></div>
+              <div id="form-wave" style="display:none; margin-top:6px;">
+                <input class="form-control" type="text" name="wave_numero" placeholder="70xxxxxxx">
+              </div>
+            </div>
+
+            <div style="margin-top:14px; display:block; text-align:right;">
+              <a class="btn btn-danger" href="{% url 'vider_panier' %}">Vider le panier</a>
+              <button class="btn btn-primary" type="submit" style="margin-left:8px;">Valider la commande</button>
+            </div>
+
+        </div>
+      {% else %}
+        <p>Votre panier est vide.</p>
+      {% endif %}
+    </div>
+  </div>
+</form>
+
+
+<!-- ==================== SCRIPT ==================== -->
+<script>
+function togglePaymentOptions() {
+    const checked = document.querySelector('input[name="paiement"]:checked');
+    const val = checked ? checked.value : null;
+    document.getElementById('carte-section').style.display = (val === 'carte') ? 'block' : 'none';
+    document.getElementById('money-options').style.display = (val === 'mobile') ? 'block' : 'none';
+}
+
+function showMoneyForm(type) {
+    ['orange','moov','wave'].forEach(t => {
+        const el = document.getElementById('form-'+t);
+        if (el) el.style.display = (t === type) ? 'block' : 'none';
+    });
+}
+
+document.querySelectorAll('input[name="paiement"]').forEach(radio => {
+    radio.addEventListener('change', function() {
+        document.getElementById('carte-section').style.display = (this.value === 'carte') ? 'block' : 'none';
+        document.getElementById('money-options').style.display = (this.value === 'mobile') ? 'block' : 'none';
+    });
+});
+
+document.querySelectorAll('input[name="moneyType"]').forEach(radio => {
+    radio.addEventListener('change', function() {
+        document.getElementById('orange-field').style.display = (this.value === 'orange') ? 'block' : 'none';
+        document.getElementById('moov-field').style.display = (this.value === 'moov') ? 'block' : 'none';
+        document.getElementById('wave-field').style.display = (this.value === 'wave') ? 'block' : 'none';
+    });
+});
+
+const toggle = document.querySelector(".menu-toggle");
+const menu = document.querySelector(".nav-menu");
+toggle.addEventListener("click", () => {
+    menu.classList.toggle("active");
+});
+</script>
+
+</body>
+</html>

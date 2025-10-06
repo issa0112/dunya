@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Mise à jour commande</title>
+
+  <style>
+    /* Reset minimal pour emails */
+    body { margin:0; padding:0; background:#f2f4f7; font-family: "Helvetica Neue", Helvetica, Arial, sans-serif; color:#333; }
+    a { color:#0d6efd; text-decoration:none; }
+    .email-wrap { width:100%; background:#f2f4f7; padding:30px 0; }
+    .email-body { max-width:680px; margin:0 auto; background:#ffffff; border-radius:8px; overflow:hidden; box-shadow:0 2px 10px rgba(16,24,40,0.08);}
+    .email-header { padding:20px 28px; background: linear-gradient(90deg,#0d6efd,#198754); color:#fff; }
+    .brand { font-size:20px; font-weight:700; }
+    .email-content { padding:28px; }
+    .h1 { font-size:20px; margin:0 0 8px; }
+    .lead { margin:0 0 16px; color:#555; font-size:15px; }
+    .card { background:#fafafa; border:1px solid #f0f0f0; padding:12px; border-radius:6px; margin-bottom:12px; }
+    .order-meta { display:flex; justify-content:space-between; gap:12px; font-size:14px; color:#444; }
+    .btn { display:inline-block; padding:10px 16px; border-radius:6px; background:#0d6efd; color:#fff; font-weight:600; text-decoration:none; margin-top:12px; }
+    .product-line { display:flex; justify-content:space-between; padding:8px 0; border-bottom:1px dashed #eee; }
+    .product-line:last-child { border-bottom:none; }
+    .total { font-weight:700; font-size:16px; text-align:right; margin-top:8px; }
+    .footer { padding:18px 28px; font-size:13px; color:#777; text-align:center; background:#fafafa; }
+    @media (max-width:480px) {
+      .email-content { padding:16px; }
+      .email-header { padding:16px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="email-wrap">
+    <div class="email-body">
+      <!-- header -->
+      <div class="email-header">
+        <div class="brand">MonSite</div>
+        <div style="font-size:13px; opacity:0.95;">Notification de commande</div>
+      </div>
+
+      <!-- content -->
+      <div class="email-content">
+        <p class="h1">Bonjour {{ commande.nom }},</p>
+        <p class="lead">
+          La commande <strong>#{{ commande.id }}</strong> a été mise à jour.
+        </p>
+
+        <div class="card">
+          <div style="display:flex;justify-content:space-between;align-items:center;">
+            <div>
+              <div style="font-size:14px;color:#333;"><strong>Statut actuel</strong></div>
+              <div style="margin-top:6px;font-weight:700;color:#198754;">{{ statut_label }}</div>
+            </div>
+            <div style="text-align:right;">
+              <div style="font-size:13px;color:#666;">Date</div>
+              <div style="margin-top:6px;">{{ commande.date|date:"d/m/Y H:i" }}</div>
+            </div>
+          </div>
+        </div>
+
+        <h4 style="margin-top:18px;margin-bottom:8px;">Récapitulatif de la commande</h4>
+
+        <div class="card" style="padding:12px;">
+          {% for ligne in commande.lignes.all %}
+            <div class="product-line">
+              <div>
+                <div style="font-size:14px;"><strong>{{ ligne.produit.nom }}</strong></div>
+                <div style="font-size:13px;color:#666;">Quantité: {{ ligne.quantite }}</div>
+              </div>
+              <div style="text-align:right;">
+                <div style="font-size:14px;">{{ ligne.prix_unitaire }} FCFA</div>
+                <div style="font-size:13px;color:#666;">{{ ligne.sous_total }} FCFA</div>
+              </div>
+            </div>
+          {% endfor %}
+          <div class="total">Total : {{ commande.total }} FCFA</div>
+        </div>
+
+        <p style="margin-top:14px;">
+          <a class="btn" href="{{ commande_url }}">Voir ma commande</a>
+        </p>
+
+        <p style="color:#555; font-size:14px; margin-top:14px;">
+          Si vous avez des questions, répondez à cet e-mail ou contactez notre support : <a href="mailto:{{ support_email }}">{{ support_email }}</a>.
+        </p>
+      </div>
+
+      <!-- footer -->
+      <div class="footer">
+        © {{ site_name }} — Tous droits réservés<br>
+        Adresse société • Téléphone • SIRET (optionnel)
+      </div>
+    </div>
+  </div>
+</body>
+</html>

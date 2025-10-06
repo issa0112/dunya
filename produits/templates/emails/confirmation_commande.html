@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Confirmation de commande</title>
+<style>
+    body { font-family: 'Helvetica', Arial, sans-serif; background-color: #f4f4f4; margin:0; padding:0;}
+    .email-container { max-width: 700px; margin: 30px auto; background-color: #ffffff; border-radius: 10px; overflow: hidden; box-shadow: 0 4px 20px rgba(0,0,0,0.1);}
+    .promo-banner { background: linear-gradient(90deg,#ff6f61,#ff9a6c); color: #fff; text-align: center; padding: 15px; font-size: 16px; animation: slide 5s infinite alternate;}
+    @keyframes slide { 0%{background-position:0 0;} 100%{background-position:100% 0;} }
+    .header { background-color: #333; color: #fff; text-align: center; padding: 25px; }
+    .header img { width: 120px; }
+    .header h1 { margin: 10px 0 0 0; font-size: 24px; }
+    .body { padding: 25px; color: #333; }
+    .body h2 { color: #ff6f61; margin-top:0; }
+    .order-table { width: 100%; border-collapse: collapse; margin-top: 15px;}
+    .order-table th, .order-table td { border: 1px solid #ddd; padding: 10px; text-align: left; }
+    .order-table th { background-color: #f9f9f9; }
+    .product-img { width: 60px; height: 60px; object-fit: cover; border-radius: 5px; }
+    .total { text-align: right; font-weight: bold; font-size: 18px; margin-top: 10px; color: #ff6f61; }
+    .btn { display: inline-block; background-color: #ff6f61; color: #fff !important; padding: 12px 25px; text-decoration: none; border-radius: 6px; margin-top: 20px; font-size: 16px; }
+    .payment-icons img { width: 40px; margin-right: 10px; margin-top: 5px; }
+    .footer { background-color: #f0f0f0; text-align: center; color: #777; font-size: 12px; padding: 20px; margin-top: 20px;}
+    @media only screen and (max-width: 600px) {
+        .email-container { width: 100%; margin: 10px; }
+        .product-img { width: 50px; height: 50px; }
+        .btn { font-size: 14px; padding: 10px 20px; }
+    }
+</style>
+</head>
+<body>
+<div class="email-container">
+
+    <!-- Promo animée -->
+    <div class="promo-banner">
+        🎉 Merci pour votre commande ! Profitez de -10% sur votre prochaine commande avec le code WELCOME10 🎉
+    </div>
+
+    <!-- Header avec logo -->
+    <div class="header">
+        <img src="{{ site_url }}/static/images/logo.png" alt="Logo">
+        <h1>Confirmation de commande</h1>
+    </div>
+
+    <!-- Corps de l'email -->
+    <div class="body">
+        <h2>Bonjour {{ client_nom }},</h2>
+        <p>Votre commande <strong>#{{ commande_id }}</strong> passée le {{ date_commande }} a été confirmée avec succès !</p>
+
+        <h3>Détails de votre commande :</h3>
+        <table class="order-table">
+            <thead>
+                <tr>
+                    <th>Produit</th>
+                    <th>Image</th>
+                    <th>Quantité</th>
+                    <th>Prix unitaire</th>
+                    <th>Sous-total</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in produits %}
+                <tr>
+                    <td>{{ item.produit.nom }}</td>
+                    <td><img src="{{ item.produit.image.url }}" alt="{{ item.produit.nom }}" class="product-img"></td>
+                    <td>{{ item.quantite }}</td>
+                    <td>{{ item.prix_unitaire }} FCFA</td>
+                    <td>{{ item.sous_total }} FCFA</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <p class="total">Total : {{ total }} FCFA</p>
+        <p>Méthode de paiement : <strong>{{ mode_paiement }}</strong></p>
+
+        <div class="payment-icons">
+            {% if mode_paiement == "carte" %}
+                <img src="{{ site_url }}/static/images/visa.png" alt="Visa">
+                <img src="{{ site_url }}/static/images/mastercard.png" alt="MasterCard">
+            {% elif mode_paiement == "mobile" %}
+                <img src="{{ site_url }}/static/images/orangemoney.png" alt="Orange Money">
+                <img src="{{ site_url }}/static/images/moovmoney.png" alt="Moov Money">
+                <img src="{{ site_url }}/static/images/wave.png" alt="Wave">
+            {% endif %}
+        </div>
+
+        <a href="{{ site_url }}/mes-commandes/{{ commande_id }}" class="btn">Suivre ma commande</a>
+
+        <p style="margin-top:20px;">Merci d'avoir choisi notre boutique !</p>
+    </div>
+
+    <!-- Footer -->
+    <div class="footer">
+        &copy; {{ annee }} VotreSiteEcommerce. Tous droits réservés.<br>
+        Vous recevez cet email car vous avez passé une commande sur notre site.
+    </div>
+</div>
+</body>
+</html>
