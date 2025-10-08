@@ -34,5 +34,5 @@ tzdata==2024.2
 urllib3==2.5.0
 uvicorn==0.37.0
 whitenoise==6.11.0
-"whitenoise[brotli]==6.11.0"
+whitenoise[brotli]==6.11.0
 yarl==1.20.1
