@@ -9,6 +9,11 @@ https://docs.djangoproject.com/en/5.2/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.2/ref/settings/
 """
+"""
+Django settings for dunya project.
+
+Compatible local (SQLite) et Render (PostgreSQL + Environment Variables).
+"""
 
 import os
 from pathlib import Path
@@ -18,18 +23,40 @@ import dj_database_url
 # Chemin de base
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-# SECRET_KEY
-SECRET_KEY = config('SECRET_KEY', default='dev-secret-key-local')  # clé locale si pas défini
-
-ALLOWED_HOSTS = Config('ALLOWED_HOSTS', default='dounya.onrender.com', cast=Csv())
-
-# DEBUG
+# ------------------------
+# SECRET KEY & DEBUG
+# ------------------------
+SECRET_KEY = config('SECRET_KEY', default='dev-secret-key-local')
 DEBUG = config('DEBUG', default=True, cast=bool)
 
+# ------------------------
 # ALLOWED_HOSTS
-ALLOWED_HOSTS = config('ALLOWED_HOSTS', default='127.0.0.1,localhost', cast=lambda v: [s.strip() for s in v.split(',')])
+# ------------------------
+ALLOWED_HOSTS = config(
+    'ALLOWED_HOSTS',
+    default='127.0.0.1,localhost,dounya.onrender.com',
+    cast=lambda v: [s.strip() for s in v.split(',')]
+)
+TEMPLATES = [
+    {
+        'BACKEND': 'django.template.backends.django.DjangoTemplates',
+        'DIRS': [BASE_DIR / 'templates'],  # ton dossier templates si tu en as un
+        'APP_DIRS': True,  # important pour que l’admin trouve ses templates
+        'OPTIONS': {
+            'context_processors': [
+                'django.template.context_processors.debug',
+                'django.template.context_processors.request',  # nécessaire pour l’admin
+                'django.contrib.auth.context_processors.auth',
+                'django.contrib.messages.context_processors.messages',
+            ],
+        },
+    },
+]
 
+
+# ------------------------
 # Applications installées
+# ------------------------
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -37,13 +64,16 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    # tes apps ici, ex:
-    'dunya',
+    # tes apps
+    'produits',
 ]
 
+# ------------------------
+# Middleware
+# ------------------------
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
-    'whitenoise.middleware.WhiteNoiseMiddleware',  # WhiteNoise pour fichiers statiques
+    'whitenoise.middleware.WhiteNoiseMiddleware',  # WhiteNoise pour statics
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -52,35 +82,23 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
+# ------------------------
+# URLs et ASGI/WSGI
+# ------------------------
 ROOT_URLCONF = 'dunya.urls'
-
-TEMPLATES = [
-    {
-        'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [BASE_DIR / 'templates'],
-        'APP_DIRS': True,
-        'OPTIONS': {
-            'context_processors': [
-                'django.template.context_processors.debug',
-                'django.template.context_processors.request',
-                'django.contrib.auth.context_processors.auth',
-                'django.contrib.messages.context_processors.messages',
-            ],
-        },
-    },
-]
-
 WSGI_APPLICATION = 'dunya.wsgi.application'
 ASGI_APPLICATION = 'dunya.asgi.application'
 
+# ------------------------
 # Base de données
+# ------------------------
 DATABASE_URL = config('DATABASE_URL', default='')
 if DATABASE_URL:
     DATABASES = {
         'default': dj_database_url.parse(DATABASE_URL, conn_max_age=600)
     }
 else:
-    # Base locale SQLite pour développement
+    # Base locale SQLite
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.sqlite3',
@@ -88,36 +106,39 @@ else:
         }
     }
 
-# Password validation
+# ------------------------
+# Password validators
+# ------------------------
 AUTH_PASSWORD_VALIDATORS = [
-    {
-        'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
-    },
+    {'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',},
+    {'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',},
+    {'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',},
+    {'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',},
 ]
 
+# ------------------------
 # Internationalisation
+# ------------------------
 LANGUAGE_CODE = 'en-us'
 TIME_ZONE = 'UTC'
 USE_I18N = True
 USE_TZ = True
 
+# ------------------------
 # Fichiers statiques
+# ------------------------
 STATIC_URL = '/static/'
 STATIC_ROOT = BASE_DIR / 'staticfiles'
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
-# Média (si utilisé)
+# ------------------------
+# Média
+# ------------------------
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
 
+# ------------------------
 # Autres paramètres
+# ------------------------
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+STRIPE_TEST_SECRET_KEY = config('STRIPE_TEST_SECRET_KEY', default='')
