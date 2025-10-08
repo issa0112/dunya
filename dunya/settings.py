@@ -10,31 +10,26 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.2/ref/settings/
 """
 
-from pathlib import Path
 import os
+from pathlib import Path
+from decouple import config, Csv
 import dj_database_url
-from decouple import Config
 
-
-
-# Build paths inside the project like this: BASE_DIR / 'subdir'.
+# Chemin de base
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+# SECRET_KEY
+SECRET_KEY = config('SECRET_KEY', default='dev-secret-key-local')  # clé locale si pas défini
 
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
+ALLOWED_HOSTS = Config('ALLOWED_HOSTS', default='dounya.onrender.com', cast=Csv())
 
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = Config('SECRET_KEY')
+# DEBUG
+DEBUG = config('DEBUG', default=True, cast=bool)
 
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+# ALLOWED_HOSTS
+ALLOWED_HOSTS = config('ALLOWED_HOSTS', default='127.0.0.1,localhost', cast=lambda v: [s.strip() for s in v.split(',')])
 
-ALLOWED_HOSTS = []
-
-
-# Application definition
-
+# Applications installées
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -42,11 +37,13 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'produits',
+    # tes apps ici, ex:
+    'dunya',
 ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',  # WhiteNoise pour fichiers statiques
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -60,37 +57,38 @@ ROOT_URLCONF = 'dunya.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [BASE_DIR / "emails"],
+        'DIRS': [BASE_DIR / 'templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
+                'django.template.context_processors.debug',
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
-                'produits.context_processors.panier_count', 
-
             ],
         },
     },
 ]
 
 WSGI_APPLICATION = 'dunya.wsgi.application'
+ASGI_APPLICATION = 'dunya.asgi.application'
 
-
-# Database
-# https://docs.djangoproject.com/en/5.2/ref/settings/#databases
-
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+# Base de données
+DATABASE_URL = config('DATABASE_URL', default='')
+if DATABASE_URL:
+    DATABASES = {
+        'default': dj_database_url.parse(DATABASE_URL, conn_max_age=600)
     }
-}
-
+else:
+    # Base locale SQLite pour développement
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': BASE_DIR / 'db.sqlite3',
+        }
+    }
 
 # Password validation
-# https://docs.djangoproject.com/en/5.2/ref/settings/#auth-password-validators
-
 AUTH_PASSWORD_VALIDATORS = [
     {
         'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
@@ -106,61 +104,20 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
-# Internationalization
-# https://docs.djangoproject.com/en/5.2/topics/i18n/
-
-LANGUAGE_CODE = 'fr-FR'
-
+# Internationalisation
+LANGUAGE_CODE = 'en-us'
 TIME_ZONE = 'UTC'
-
 USE_I18N = True
-
 USE_TZ = True
 
+# Fichiers statiques
+STATIC_URL = '/static/'
+STATIC_ROOT = BASE_DIR / 'staticfiles'
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/5.2/howto/static-files/
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
-
-STATIC_URL = 'static/'
-
-# Default primary key field type
-# https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
-
-DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-
-
-import os
-
+# Média (si utilisé)
 MEDIA_URL = '/media/'
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_ROOT = BASE_DIR / 'media'
 
-
-# import stripe
-STRIPE_TEST_PUBLIC_KEY = 'pk_test_XXXXXXXXXXXXXXXXXXXX'
-STRIPE_TEST_SECRET_KEY = 'sk_test_XXXXXXXXXXXXXXXXXXXX'
-
-LOGIN_URL = '/login/'  # or whatever URL you have for your login view
-# Redirection après login
-LOGIN_REDIRECT_URL = '/'  # ou vers la page de ton choix
-
-
-
-EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
-EMAIL_HOST = "smtp.gmail.com"
-EMAIL_PORT = 587
-EMAIL_USE_TLS = True
-EMAIL_HOST_USER = "tonemail@gmail.com"
-EMAIL_HOST_PASSWORD = "ton_mot_de_passe_app"  # mot de passe application Gmail
-DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
-
-TWILIO_ACCOUNT_SID = "TON_SID"
-TWILIO_AUTH_TOKEN = "TON_TOKEN"
-TWILIO_PHONE_NUMBER = "+1234567890"
-
-
-if os.environ.get('RENDER'):
-    DATABASES = {
-        'default': dj_database_url.config(default='sqlite:///db.sqlite3')
-    }
+# Autres paramètres
+DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
